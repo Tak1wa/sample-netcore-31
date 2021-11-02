@@ -68,9 +68,12 @@ jobs:
       - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
         uses: azure/login@v1.4.0
         with:
-          client-id: ${{ secrets.AZURE_CLIENTID }}
-          tenant-id: ${{ secrets.AZURE_TENANTID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTIONID }} 
+          # client-id: ${{ secrets.AZURE_CLIENTID }}
+          # tenant-id: ${{ secrets.AZURE_TENANTID }}
+          # subscription-id: ${{ secrets.AZURE_SUBSCRIPTIONID }} 
+          client-id: a6f059c5-1136-487f-8ed4-66b22f933a4f
+          tenant-id: 9b9e2fc6-dc1a-4d7f-97ff-e86600ac5b48
+          subscription-id: 330e1516-2a40-45fc-9ce0-cab039ecdfed 
           enable-AzPSSession: true
           
       - name: Download artifact from build job
