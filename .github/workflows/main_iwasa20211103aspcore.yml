@@ -9,6 +9,9 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  
 jobs:
   build:
     runs-on: windows-latest
@@ -47,11 +50,31 @@ jobs:
         with:
           name: .net-app
 
+      - name: Installing CLI-beta for OpenID Connect
+        run: |
+          cd ../..
+          CWD="$(pwd)"
+          python3 -m venv oidc-venv
+          . oidc-venv/bin/activate
+          echo "activated environment"
+          python3 -m pip install -q --upgrade pip
+          echo "started installing cli beta"
+          pip install -q --extra-index-url https://azcliprod.blob.core.windows.net/beta/simple/ azure-cli
+          echo "***************installed cli beta*******************"
+          echo "$CWD/oidc-venv/bin" >> $GITHUB_PATH
+      - name: 'Az CLI login'
+        id: azure_login
+        uses: azure/login@v1.4.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENTID }}
+          tenant-id: ${{ secrets.AZURE_TENANTID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTIONID }}
+          
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'iwasa20211103aspcore'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B0984B498A96463183F0D36D46AFF106 }}
+          # publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B0984B498A96463183F0D36D46AFF106 }}
           package: .
