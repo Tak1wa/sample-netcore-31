@@ -32,7 +32,7 @@ namespace sample_netcore_31
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("Hello World!!!");
                 });
             });
         }
